@@ -1,0 +1,35 @@
+package samples
+
+import org.testng.Assert
+import org.specs.SpecsMatchers
+import org.testng.annotations.BeforeClass
+import org.testng.annotations.Test
+import _root_.org.scalacheck._
+
+class TestNGSampleTest extends Properties("String") with SpecsMatchers {
+
+  var call = 0
+
+  @BeforeClass
+  def do_before_once() {
+    call += 1
+    call must_== 1
+  }
+
+  @Test
+  def sample_assert_call() {
+    call must_== 1
+    (2 + 3) must_!= (2 * 3)
+  }
+
+  @Test
+  def basic_scalacheck_demo_should_failed() {
+    property("endsWith") = Prop.forAll((a: String, b: String) => (a + b).endsWith(a))
+    Assert.fail("previous test should failed before")
+  }
+
+  @Test
+  def basic_scalacheck_demo_should_pass() {
+    property("endsWith") = Prop.forAll((a: String, b: String) => (a + b).endsWith(b))
+  }
+}
